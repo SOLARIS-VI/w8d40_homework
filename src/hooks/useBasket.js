@@ -1,32 +1,29 @@
 import { useState } from 'react';
 
-export const useBasket = () => {
+const useBasket = () => {
   const [basket, setBasket] = useState([]);
 
-  const addItem = (product) => {
-    setBasket((prevBasket) => [...prevBasket, product]);
+  const addItem = (item) => {
+    setBasket((prevBasket) => [...prevBasket, item]);
   };
 
-  const removeItem = (productId) => {
-    setBasket((prevBasket) =>
-      prevBasket.filter((product) => product.id !== productId)
-    );
+  const removeItem = (itemId) => {
+    setBasket((prevBasket) => prevBasket.filter((item) => item.id !== itemId));
   };
 
-  const updateQuantity = (productId, quantity) => {
+  const updateQuantity = (itemId, quantity) => {
     setBasket((prevBasket) =>
-      prevBasket.map((product) =>
-        product.id === productId ? { ...product, quantity } : product
+      prevBasket.map((item) =>
+        item.id === itemId ? { ...item, quantity } : item
       )
     );
   };
 
-  return {
-    basket,
-    addItem,
-    removeItem,
-    updateQuantity,
+  const clearBasket = () => {
+    setBasket([]);
   };
+
+  return { basket, addItem, removeItem, updateQuantity, clearBasket };
 };
 
 export default useBasket;

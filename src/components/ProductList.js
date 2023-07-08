@@ -1,16 +1,23 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import ArtWorks from './ArtWorks';
-import { useHistory } from 'react-router-dom'; // Import useHistory
+import useBasket from '../hooks/useBasket'; 
 
-const ProductList = () => {
-  const history = useHistory(); // Create a history object
+const ProductList = ({ onBuy }) => {
+  const history = useHistory();
+  const { addItem } = useBasket();
 
-  const handleBuy = (artwork) => {
-    // Handle buy button click
-    history.push({
-      pathname: '/basket',
-      state: { artwork }, // Pass the selected artwork as state
-    });
+  const handleBuyClick = (product) => {
+    const item = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      quantity: 1  
+    };
+
+    addItem(item);
+    onBuy(product);
+    history.push('/basket');
   };
 
   return (
@@ -22,7 +29,7 @@ const ProductList = () => {
             <h2>{artwork.title}</h2>
             <img src={`./images/${artwork.image}`} alt={artwork.title} />
             <p>Price: £{artwork.price}</p>
-            <button onClick={() => handleBuy(artwork)}>Buy</button> {/* Add onClick handler */}
+            <button onClick={() => handleBuyClick(artwork)}>Buy</button>
           </li>
         ))}
       </ul>
